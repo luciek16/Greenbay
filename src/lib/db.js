@@ -1,17 +1,10 @@
 import { createConnection } from "mysql2";
 
-// let db = createConnection({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_DATABASE,
-// });
-
 let db = createConnection({
-  host: "localhost",
-  user: "root",
-  password: "william.27",
-  database: "greenbuy",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 db.connect((err) => {
@@ -22,4 +15,12 @@ db.connect((err) => {
   console.log("Connection established");
 });
 
-export default db;
+async function databaseQuery(query, params) {
+  return new Promise((resolve, reject) => {
+    db.query(query, params, (err, result) => {
+      err ? reject(err) : resolve(result);
+    });
+  });
+}
+
+export default databaseQuery;

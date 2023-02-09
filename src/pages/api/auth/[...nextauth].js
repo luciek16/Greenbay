@@ -3,17 +3,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 // export default NextAuth({
-//   // any secret word like: "i am a stegosaurus"
-
-import db from "@/lib/db";
-
-async function databaseQuery(query, params) {
-  return new Promise((resolve, reject) => {
-    db.query(query, params, (err, result) => {
-      err ? reject(err) : resolve(result);
-    });
-  });
-}
+import databaseQuery from "@/lib/db";
 
 const authOptions = {
   // enabe JWT
