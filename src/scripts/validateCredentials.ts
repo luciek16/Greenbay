@@ -1,16 +1,13 @@
-const validateCredentials = (username: string, password: string) => {
-  let passwordValidation = /^(?=.\d)(?=.[a-z])(?=.*[A-Z]).{8,30}$/;
+const validateCredentials = (username: string, password: string): boolean => {
+  if (!username || !password || username.length < 5 || password.length < 6) {
+    return false;
+  }
 
-  if (!username || !password) {
-    return false;
-  }
-  if (username.length < 5) {
-    return false;
-  }
-  if (!password.match(passwordValidation)) {
-    return false;
-  }
-  return true;
+  const hasNumber = /\d/.test(password);
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+
+  return hasNumber && hasUpperCase && hasLowerCase;
 };
 
 export default validateCredentials;

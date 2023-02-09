@@ -2,7 +2,7 @@ import { createConnection } from "mysql2";
 
 // let db = createConnection({
 //   host: process.env.DB_HOST,
-//   user: process.env.DB_USER1,
+//   user: process.env.DB_USER,
 //   password: process.env.DB_PASSWORD,
 //   database: process.env.DB_DATABASE,
 // });
@@ -13,6 +13,7 @@ let db = createConnection({
   password: "william.27",
   database: "greenbuy",
 });
+
 db.connect((err) => {
   if (err) {
     console.error("Cannot connect to the database", err);
