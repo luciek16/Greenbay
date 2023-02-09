@@ -4,8 +4,17 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 // export default NextAuth({
 //   // any secret word like: "i am a stegosaurus"
-//   secret: process.env.SECRET,
-const db = require("@/lib/db").default;
+
+import db from "@/lib/db";
+
+async function databaseQuery(query, params) {
+  return new Promise((resolve, reject) => {
+    db.query(query, params, (err, result) => {
+      err ? reject(err) : resolve(result);
+    });
+  });
+}
+
 const authOptions = {
   // enabe JWT
   session: {
@@ -31,45 +40,44 @@ const authOptions = {
 
       // name: "Sign In With Credentials",
       //in credentials we have all the data coming from the user, all the credentials come from the credentials object above
-      authorize(credentials, req) {
+      async authorize(credentials, req) {
         const { username, password } = credentials;
-        console.log(username);
-        console.log(password);
 
         if (!validateCredentials(username, password)) {
           return null;
         }
         let sql = `SELECT * FROM users WHERE username = ? `;
-        db.query(sql, username, (err, result) => {
-          if (err) {
-            console.log(err);
-            result.serverStatus(500).json({ message: "Internal server error" });
-            return;
-          }
-          if (!result.length) {
-            sql = `INSERT INTO users SET username= ?, password= ? `;
-            db.query(sql, [username, password], (err, insertResult) => {
-              if (err) {
-                console.log(err);
-                result
-                  .serverStatus(500)
-                  .json({ message: "Internal server error" });
-                return;
-              }
-            });
-          }
-        });
-        return { username, password };
+        const result = await databaseQuery(sql, username).catch((e) =>
+          console.log(e)
+        );
+
+        if (result.length) {
+          return { name: username, id: result[0].id };
+        }
+
+        sql = `INSERT INTO users SET ? `;
+        const add = await databaseQuery(sql, { username, password });
+
+        return { name: username, id: add.insertId };
       },
-      //here we perform our logic - find user in the db
     }),
   ],
-  // if I want to create seperate pages for each of these actions, I can do it this way
-  // pages: {
-  // signIn: "/auth/signin",
-  //error:
-  //signOut
-  // },
+  secret: process.env.SECRET,
+  jwt: {
+    secret: process.env.SECRET,
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user && user.name) {
+        token.userName = user.name;
+        token.userId = user.id;
+      }
+      return token;
+    },
+    async session({ token, session }) {
+      session.user.id = token.userId;
+      return session;
+    },
+  },
 };
-// });
 export default NextAuth(authOptions);
