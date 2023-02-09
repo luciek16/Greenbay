@@ -46,7 +46,18 @@ const authOptions = {
             result.serverStatus(500).json({ message: "Internal server error" });
             return;
           }
-          console.log(result);
+          if (!result.length) {
+            sql = `INSERT INTO users SET username= ?, password= ? `;
+            db.query(sql, [username, password], (err, insertResult) => {
+              if (err) {
+                console.log(err);
+                result
+                  .serverStatus(500)
+                  .json({ message: "Internal server error" });
+                return;
+              }
+            });
+          }
         });
         return { username, password };
       },

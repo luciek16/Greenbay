@@ -1,18 +1,10 @@
 const validateCredentials = (username: string, password: string) => {
-  const toUpperCase = (element: any) => element == element.toUpperCase();
-  let passwordValidation = /^(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,30}$/;
-  const num = (element: any) => {
-    typeof parseInt(element) == "number";
-  };
+  let passwordValidation = /^(?=.\d)(?=.[a-z])(?=.*[A-Z]).{8,30}$/;
 
   if (!username || !password) {
     return false;
   }
-  if (username.length < 5 || password.length < 8) {
-    return false;
-  }
-  //   console.log(password.split("").some(num));
-  if (password.split("").some(toUpperCase) == false) {
+  if (username.length < 5) {
     return false;
   }
   if (!password.match(passwordValidation)) {
