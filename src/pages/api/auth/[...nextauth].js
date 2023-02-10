@@ -33,22 +33,25 @@ const authOptions = {
       async authorize(credentials, req) {
         const { username, password } = credentials;
 
-        if (!validateCredentials(username, password)) {
-          return null;
-        }
         let sql = `SELECT * FROM users WHERE username = ? `;
         const result = await databaseQuery(sql, username).catch((e) =>
           console.log(e)
         );
 
-        if (result.length) {
+        if (result.length && password === result[0].password) {
           return { name: username, id: result[0].id };
+        } else if (result.length && password != result[0].password) {
+          return null;
+        } else {
+          if (!validateCredentials(username, password)) {
+            return null;
+          }
+
+          sql = `INSERT INTO users SET ? `;
+          const add = await databaseQuery(sql, { username, password });
+
+          return { name: username, id: add.insertId };
         }
-
-        sql = `INSERT INTO users SET ? `;
-        const add = await databaseQuery(sql, { username, password });
-
-        return { name: username, id: add.insertId };
       },
     }),
   ],
