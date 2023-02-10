@@ -6,11 +6,8 @@ function HomePage() {
     return (
       <div className="flex pl-8 gap-8 text-xl font-bold text-green-800">
         <p>Hi {session.user?.name}!</p>
-        {session && <>
         <button>Sell</button>
-        <button>Buy</button>
-        </>}
-        
+        <button>Buy</button>  
         {/* <p>Current balance is {user?.credit}</p> */}
         <button onClick={() => signOut()}>Sign out</button>
       </div>
