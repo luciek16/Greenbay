@@ -23,3 +23,28 @@ test("logging in with password that is missing numbers should return false", () 
 test("logging in with password that is missing lower case chars should return false", () => {
   expect(validateCredentials("iamtester", "HELLOIAMPASSWORD1")).toBe(false);
 });
+
+function maskify(cc) {
+  if (cc.length < 4) {
+    return cc;
+  }
+  let result = "";
+  for (let i = 0; i < cc.length; i++) {
+    i < cc.length - 4 ? (result += "#") : (result += cc[i]);
+  }
+  return result;
+}
+console.log(maskify("4556364607935616"));
+console.log(maskify("Pejsek")); // ##jsek
+
+test("should return 1", () => {
+  expect(maskify("1")).toBe("1");
+});
+
+test("should return ##jsek on Pejsek", () => {
+  expect(maskify("Pejsek")).toStrictEqual("##jsek");
+});
+
+test("should return #ucie on Lucie", () => {
+  expect(maskify("Lucie")).toEqual("#ucie");
+});
