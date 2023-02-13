@@ -5,46 +5,44 @@ const AddItem = () => {
     const [imageURL, setImgURL] = useState("")
     const [itemPrice, setItemPrice] = useState("")
 
-    const nameChangeHandler = (event)=>{
-        setItemName(event.target.value)
-    }
-    const imageChangeHandler = (event)=>{
-        setImgURL(event.target.value)
-    }
-    const priceChangeHandler = (event)=>{
-        setItemPrice(event.target.value)
-    }
-
     const addItemHandler = async(event) => {
         event.preventDefault();
  
-            await fetch(`/api/addItem`, {
+        try{
+            const addItem= await fetch(`/api/addItem`, {
             method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
             body: JSON.stringify({
                 itemName: itemName,
                 imageURL: imageURL,
                 price: itemPrice
             }),
-            headers: {
-              "content-type": "application/json",
-            },
-          }
-      
-    ).then(response=> response.json()).catch(error=> {console.log(error)})}
-    return (<form onSubmit={addItemHandler}>
+
+        }
+       
+        
+    )
+}catch(error){
+     console.log(error)
+     alert(`Too bad, didn't work`)
+    }
+
+    return (<form onSubmit = {addItemHandler}>
         <h4>Add new item</h4>
 
     <label htmlFor="name">Name </label>
-        <input type='text' name='itemName' onChange={nameChangeHandler}/>
+        <input type='text' name='itemName' onChange={(e) => setItemName(e.target.value)}/>
 
     <label htmlFor="imageURL">Image URL </label>
-        <input type='text' name='imgURL' onChange={imageChangeHandler}/>
+        <input type='text' name='imgURL' onChange={(e) => setImgURL(e.target.value)}/>
    
     <label htmlFor="price">Price </label>
-        <input type='number' min='0.01' step="0.01" name='itemPrice' onChange={priceChangeHandler}/>
+        <input type='number' min='0.01' step="0.01" name='itemPrice' onChange={(e) => setItemPrice(e.target.value)}/>
    
     <button>Add</button>
     </form>)
-}
+}}
 
 export default AddItem
