@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import AddItem from '@/components/AddItem'
+import ListItems from '@/components/ListItems'
 
 
 function HomePage() {
@@ -13,7 +14,8 @@ function HomePage() {
         {/* <p>Current balance is {user?.credit}</p> */}
         <button onClick={() => signOut()}>Sign out</button>
       </div>
-        <AddItem/>
+      <AddItem/>
+      <ListItems/>
     </div>
 
     )

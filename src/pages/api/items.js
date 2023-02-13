@@ -1,6 +1,7 @@
 import { resourceLimits } from "worker_threads";
 import checkToken from "../../scripts/checkToken";
-import databaseQuery from "./../../lib/db";
+import databaseQuery from "../../lib/db";
+import { isTemplateSpan } from "typescript";
 
 export default async function addItemHandler(req, res) {
   const token = await checkToken(req);
@@ -9,6 +10,19 @@ export default async function addItemHandler(req, res) {
     return res.status(401).send({ message: "Unauthorized" });
   }
 
+  if (req.method === "GET") {
+    try {
+      const getItems = await databaseQuery(`SELECT * FROM items`);
+      console.log(getItems);
+      return res.status(200).json({
+        data: {
+          items: getItems,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   if (req.method === "POST") {
     const { itemName, imageURL, price } = req.body;
     const seller = token.sub;

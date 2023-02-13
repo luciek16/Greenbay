@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const AddItem = () => {
+const AddItem = async() => {
     const [itemName, setItemName]= useState("")
     const [imageURL, setImgURL] = useState("")
     const [itemPrice, setItemPrice] = useState("")
@@ -9,7 +9,7 @@ const AddItem = () => {
         event.preventDefault();
  
         try{
-            const addItem= await fetch(`/api/addItem`, {
+            const addItem = await fetch(`/api/items`, {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -20,14 +20,14 @@ const AddItem = () => {
                 price: itemPrice
             }),
 
-        }
-       
-        
-    )
+        }   
+    ); const response = await addItem.json()
+       console.log(response.message)
 }catch(error){
-     console.log(error)
-     alert(`Too bad, didn't work`)
-    }
+    console.log(error)
+    alert(`Too bad, didn't work`)
+   }
+}
 
     return (<form onSubmit = {addItemHandler}>
         <h4>Add new item</h4>
@@ -43,6 +43,6 @@ const AddItem = () => {
    
     <button>Add</button>
     </form>)
-}}
+}
 
 export default AddItem
