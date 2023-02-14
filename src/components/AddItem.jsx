@@ -1,12 +1,16 @@
 import { useState } from "react"
 
-const AddItem = async() => {
+const AddItem = () => {
     const [itemName, setItemName]= useState("")
     const [imageURL, setImgURL] = useState("")
     const [itemPrice, setItemPrice] = useState("")
 
     const addItemHandler = async(event) => {
         event.preventDefault();
+
+    if(!itemName || ! imageURL || !itemPrice){
+        alert('Missing some information')
+    }
  
         try{
             const addItem = await fetch(`/api/items`, {

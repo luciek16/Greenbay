@@ -1,27 +1,40 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const ListItems = async () => {
-    const [data, setData] = useState({})
-    try{
-    const getItems = await fetch('/api/items')
-    const responseJSON = await getItems.json()
-    
-    // setData(responseJSON)
-    console.log(responseJSON)
-    // const data = await getItems.data
-    // console.log(data)
-    
-   
-    }catch(error){
-        console.log(error)
+const ListItems = () => {
+    const [items, setItems] = useState([])
+    const fetchingItems = async () => {
+        try {
+            const getItems = await fetch('/api/items')
+            const response = await getItems.json()
+            const itemsData= response.data.items.map((data)=> { 
+                return {
+                id: data.id,
+                itemName: data.itemName,
+                price: data.price,
+                image: data.image
+            }})
+            setItems(itemsData)
+        
+            console.log(itemsData)
+        } catch(error) {
+            console.log(error)
+        }
     }
+    useEffect(() => {
+        fetchingItems()
+    },[])
     return (
         <div>
-            {/* <p>{data.items.map(item=> {item.itemName} {item.image})}</p> */}
-                {/* {data.items.map(item=> <ul><li>{item.itemName}</li><li>{item.image}</li><li>{item.price}</li></ul>)} */}
-            
+            <ul className="grid grid-cols-2 gap-5">
+                <li>Nemám se rád</li>
+                <li>Lucie, máš to rozbité</li>
+                {items.map((item)=>(
+                    <li key={item.id} className="p-5">{item.itemName} {item.price} CZK <img src={item.image}/></li>
+                ))}
+                <li>Lucie cpe async do react funkcí</li>
+            </ul>
         </div>
     )
 }
 
-export default ListItems
+    export default ListItems
