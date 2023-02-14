@@ -8,10 +8,4 @@ export default function handler(req, res) {
   res.status(200).json({ name: "John Doe" });
 }
 
-const checkToken = async (req) => {
-  const secret = process.env.SECRET;
-  const token = getToken({ req, secret });
-  return token ? token : null;
-};
-
 // export default checkToken
