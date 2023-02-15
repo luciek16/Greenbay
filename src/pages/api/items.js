@@ -23,6 +23,9 @@ export default async function addItemHandler(req, res) {
     const { itemName, imageURL, price } = req.body;
     const seller = token.sub;
 
+    if (price % 1 !== 0 || price <= 0)
+      return res.status(400).json({ error: "Price must be positive integer" });
+
     try {
       const id = await databaseQuery(
         `INSERT INTO items (itemName, image, price, seller) VALUES (?, ?, ?, ?)`,
