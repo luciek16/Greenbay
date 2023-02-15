@@ -1,49 +1,63 @@
 import { useState } from "react"
 
-const AddItem = () => {
+const AddItem = ({setItems}) => {
     const [itemName, setItemName]= useState("")
-    const [imageURL, setImgURL] = useState("")
+    const [imgURL, setImgURL] = useState("")
     const [itemPrice, setItemPrice] = useState("")
 
     const addItemHandler = async(event) => {
         event.preventDefault();
 
-    if(!itemName || ! imageURL || !itemPrice){
-        alert('Missing some information')
+    if (!itemName || ! imgURL || !itemPrice) {
+        return alert('Missing some information')
     }
  
-        try{
-            const addItem = await fetch(`/api/items`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({
-                itemName: itemName,
-                imageURL: imageURL,
-                price: itemPrice
-            }),
+    try{
+        const addItem = await fetch(`/api/items`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({
+            itemName: itemName,
+            imageURL: imgURL,
+            price: itemPrice
+        }),
+    }); 
 
-        }   
-    ); const response = await addItem.json()
-       console.log(response.message)
-}catch(error){
-    console.log(error)
-    alert(`Too bad, didn't work`)
-   }
+        if(addItem.status == 201){
+            const data = await addItem.json()
+            setItems(prev => [
+                ...prev,
+                {
+                    id: data.newItem.id,
+                    itemName: data.newItem.itemName,
+                    image: data.newItem.imageURL,
+                    price: data.newItem.price
+                }   
+            ])
+            setItemName('')
+            setImgURL('')
+            setItemPrice('')
+        }
+    } catch(error){
+        console.log(error)
+        return alert(`Too bad, didn't work`)
+    }
+
 }
 
     return (<form onSubmit = {addItemHandler}>
         <h4>Add new item</h4>
 
     <label htmlFor="name">Name </label>
-        <input type='text' name='itemName' onChange={(e) => setItemName(e.target.value)}/>
+        <input type='text' name='itemName' value={itemName} onChange={(e) => setItemName(e.target.value)}/>
 
     <label htmlFor="imageURL">Image URL </label>
-        <input type='text' name='imgURL' onChange={(e) => setImgURL(e.target.value)}/>
+        <input type='text' name='imgURL' value={imgURL} onChange={(e) => setImgURL(e.target.value)}/>
    
     <label htmlFor="price">Price </label>
-        <input type='number' min='0.01' step="0.01" name='itemPrice' onChange={(e) => setItemPrice(e.target.value)}/>
+        <input type='number' min='0.01' step="0.01" name='itemPrice' value={itemPrice} onChange={(e) => setItemPrice(e.target.value)}/>
    
     <button>Add</button>
     </form>)

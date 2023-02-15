@@ -24,11 +24,18 @@ export default async function addItemHandler(req, res) {
     const seller = token.sub;
 
     try {
-      await databaseQuery(
+      const id = await databaseQuery(
         `INSERT INTO items (itemName, image, price, seller) VALUES (?, ?, ?, ?)`,
         [itemName, imageURL, price, seller]
       );
-      return res.status(201).send({ message: "Created" });
+      return res.status(201).json({
+        newItem: {
+          itemName,
+          imageURL,
+          price,
+          id: id.insertId,
+        },
+      });
     } catch (err) {
       console.log(err);
       return res.status(500).send({ message: "Internal server error" });
