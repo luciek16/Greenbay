@@ -17,8 +17,10 @@ export default async function addItemHandler(req, res) {
       });
     } catch (error) {
       console.log(error);
+      return res.status(500).send({ message: "Internal server error" });
     }
   }
+
   if (req.method === "POST") {
     const { itemName, imageURL, price } = req.body;
     const seller = token.sub;

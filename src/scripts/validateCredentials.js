@@ -1,4 +1,4 @@
-const validateCredentials = (username: string, password: string): boolean => {
+const validateCredentials = (username, password) => {
   if (!username || !password || username.length < 5 || password.length < 6) {
     return false;
   }
