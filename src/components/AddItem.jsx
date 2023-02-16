@@ -48,15 +48,15 @@ const AddItem = ({setItems}) => {
 }
 
     return (<form onSubmit = {addItemHandler}>
-        <h4>Add new item</h4>
+        <h4 className="mx-10 text-small font-bold tracking-wider text-green-800">Add new item</h4>
 
-    <label htmlFor="name">Name </label>
+    <label htmlFor="name" className="mx-10 text-small font-bold tracking-wider text-green-800">Name </label>
         <input type='text' name='itemName' value={itemName} onChange={(e) => setItemName(e.target.value)}/>
 
-    <label htmlFor="imageURL">Image URL </label>
+    <label htmlFor="imageURL" className="mx-10 text-small font-bold tracking-wider text-green-800">Image URL </label>
         <input type='text' name='imgURL' value={imgURL} onChange={(e) => setImgURL(e.target.value)}/>
    
-    <label htmlFor="price">Price </label>
+    <label htmlFor="price" className="mx-10 text-small font-bold tracking-wider text-green-800">Price </label>
         <input type='number' min='0.01' step="0.01" name='itemPrice' value={itemPrice} onChange={(e) => setItemPrice(e.target.value)}/>
    
     <button>Add</button>

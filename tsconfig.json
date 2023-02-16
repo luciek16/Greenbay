@@ -19,6 +19,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/api/auth/[...nextauth].js", "src/pages/api/hello.js", "src/pages/index.jsx", "src/pages/_app.jsx", "src/pages/auth/signin.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/api/auth/[...nextauth].js", "src/pages/api/hello.js", "src/pages/index.jsx", "src/pages/_app.jsx", "src/pages/auth/signin.jsx", "src/scripts/validateCredentials.js"],
   "exclude": ["node_modules"]
 }

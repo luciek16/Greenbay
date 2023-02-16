@@ -10,7 +10,7 @@ function HomePage() {
 
   if (session) {
     return (
-    <div className="mx-10 text-small font-bold tracking-wider text-green-800">
+    <div>
       <div className="flex pl-8 pt-5 gap-8 text-xl font-bold tracking-wider text-green-800">
         <p>Hi {session.user?.name}!</p>
         <button>Sell</button>
@@ -24,7 +24,7 @@ function HomePage() {
   }
   return (
     <div>
-      <h1>Welcome to hellbuy</h1>
+      <h1 className="flex pl-8 pt-5 gap-8 text-xl font-bold tracking-wider text-green-800">Welcome to GreenBay</h1>
       <button onClick={()=> {signIn()}}>Login</button>
     </div>
   )
