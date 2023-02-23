@@ -1,6 +1,8 @@
+import { useRouter } from "next/router"
 import { useState } from "react"
 
 const SellItem = ({}) => {
+    const router=useRouter()
     const [itemName, setItemName]= useState("")
     const [imgURL, setImgURL] = useState("")
     const [itemPrice, setItemPrice] = useState("")
@@ -32,15 +34,17 @@ const SellItem = ({}) => {
         }
         
         if(addItem.status === 201){
-        //     setItems(prev => [
-        //         ...prev,
-        //         {
-        //             id: data.newItem.id,
-        //             itemName: data.newItem.itemName,
-        //             image: data.newItem.imageURL,
-        //             price: data.newItem.price
-        //         }   
-        //     ])
+        
+                // setItems(prev => [
+                //     ...prev,
+                //  newwItem
+                // ])
+            router.push({pathname: `/items/${data.newItem.id}`, query: {
+                id: data.newItem.id,
+                itemName: data.newItem.itemName,
+                image: data.newItem.imageURL,
+                price: data.newItem.price
+            } });
             setItemName('')
             setImgURL('')
             setItemPrice('')
