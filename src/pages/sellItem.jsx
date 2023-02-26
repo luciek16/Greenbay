@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 
 const SellItem = ({}) => {
-    const router=useRouter()
+    const router = useRouter()
     const [itemName, setItemName]= useState("")
     const [imgURL, setImgURL] = useState("")
     const [itemPrice, setItemPrice] = useState("")
@@ -39,12 +39,13 @@ const SellItem = ({}) => {
                 //     ...prev,
                 //  newwItem
                 // ])
-            router.push({pathname: `/items/${data.newItem.id}`, query: {
-                id: data.newItem.id,
-                itemName: data.newItem.itemName,
-                image: data.newItem.imageURL,
-                price: data.newItem.price
-            } });
+            router.push(`items/[id]`, `/items/${data.newItem.id}`)
+            // , query: {
+            //     id: data.newItem.id,
+            //     itemName: data.newItem.itemName,
+            //     image: data.newItem.imageURL,
+            //     price: data.newItem.price
+            // } });
             setItemName('')
             setImgURL('')
             setItemPrice('')

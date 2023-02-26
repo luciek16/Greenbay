@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import Link from "next/link"
 
 const ListItems = ({items, setItems}) => {
     const fetchingItems = async () => {
@@ -19,7 +20,9 @@ const ListItems = ({items, setItems}) => {
         <div>
             <ul className="grid grid-cols-2 gap-5">
                 {items.map((item)=>(
-                    <li key={item.id} className="p-5">{item.itemName} {item.price} CZK <img src={item.image}/></li>
+                    <Link href={`/items/${item.id}`}>
+                    <li key={item.id} className="p-5">{item.itemName} {item.price} GRD <img src={item.image}/></li>
+                    </Link>
                 ))}
             </ul>
         </div>

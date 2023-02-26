@@ -1,13 +1,25 @@
 import { signIn, signOut, useSession } from "next-auth/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import ListItems from '@/components/ListItems'
+
 
 
 function HomePage() {
   const { data: session} = useSession()
   const [items, setItems] = useState([])
+  const [userData, setUserData] = useState('')
   const router= useRouter()
+
+  const fetchDollars = async()=> {
+    const dollarAmount = await fetch(`/api/user`)
+    const response = await dollarAmount.json()
+    setUserData(response.greenDollars)
+  }
+
+  useEffect(()=> {
+    fetchDollars()
+  },[])
 
   if (session) {
     return (
@@ -15,7 +27,7 @@ function HomePage() {
       <div className="flex pl-8 pt-5 gap-8 text-xl font-bold tracking-wider text-green-800">
         <p>Hi {session.user?.name}!</p>
         <button type='button' onClick={()=> router.push('/sellItem')}>Sell</button>
-        <p>Green Dollars: </p> //todo: Fetch greenDollars
+        <p>Green Dollars: {userData} </p>
         <button onClick={() => signOut()}>Sign out</button>
       </div>
       {/* <AddItem setItems={setItems}/> */}
