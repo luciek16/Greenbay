@@ -1,7 +1,6 @@
 import checkToken from "../../scripts/checkToken";
 import databaseQuery from "../../lib/db";
 import isValidURL from "../../scripts/validateURL";
-import { data } from "autoprefixer";
 
 export default async function addItemHandler(req, res) {
   const token = await checkToken(req);
@@ -62,22 +61,25 @@ export default async function addItemHandler(req, res) {
       );
       const userGRD = getUserGRD[0].greendollars;
       if (userGRD > itemPrice) {
-        console.log(itemSeller);
-
-        const deductDollars = await databaseQuery(
-          `UPDATE users, items SET users.greendollars = users.greendollars - ?, users.greendollars = users.greendollars + ?, items.sellable = ?, items.buyer = ? WHERE users.id = ? AND users.username = ? AND items.id = ? AND items.id = ?`,
-          [
-            itemPrice,
-            itemPrice,
-            "1",
-            token.username,
-            token.sub,
-            itemSeller,
-            itemId,
-            itemId,
-          ]
+        const deductDollars = databaseQuery(
+          `UPDATE users, items SET users.greendollars = users.greendollars - ?, items.sellable = ?, items.buyer = ? WHERE users.username = ? AND items.id = ? AND items.id = ?`,
+          [itemPrice, 0, token.name, token.name, itemId, itemId]
         );
-        console.log(deductDollars);
+        const addDollars = databaseQuery(
+          `UPDATE users SET greendollars = greendollars + ? WHERE username = ?`,
+          [itemPrice, itemSeller]
+        );
+        const [result1, result2] = await Promise.all([
+          deductDollars,
+          addDollars,
+        ]);
+        const combinedResults = {
+          result1: result1,
+          result2: result2,
+        };
+        console.log(result1);
+        console.log(combinedResults);
+        return res.status(200).send({ message: "Updated" });
       }
     } catch (error) {
       console.log(error);

@@ -1,12 +1,13 @@
 import databaseQuery from "../../lib/db"
 import Link from "next/link"
 import checkToken from "../../scripts/checkToken"
+import { useRouter } from "next/router"
 
 const DisplayItem = (props) => {
-console.log(props)
+    const router = useRouter()
 
 const buyItemHandler = async() => {
-    const buyItem = fetch(`/api/items`,{
+    const buyItem = await fetch(`/api/items`,{
         method: 'PUT',
         headers: {
             'Content-type': 'application/json'
@@ -16,18 +17,24 @@ const buyItemHandler = async() => {
             itemPrice: props.price,
             itemSeller: props.seller
         }
-        })
-    })
+    }
+    )
+}   )    
+   const response = await buyItem.json()
+   console.log(response)
+   if(response.message === "Updated"){
+        router.push(`index`, `/`)
+   }
 }
 return(
     <div>
         <p>{props.itemName}</p>
-        <p>{props.price} GRD</p> 
-        <p>{props.seller}</p>
+        <p>Price: {props.price} GRD</p> 
+        <p>Seller: {props.seller}</p>
         <img src={props.image}/>
 
         {props.buyer != 'null' && <div>
-            <p>{props.buyer}</p> 
+            <p>Buyer: {props.buyer}</p> 
             <button type="button" onClick={buyItemHandler}>Buy</button>
             </div>} 
                          
