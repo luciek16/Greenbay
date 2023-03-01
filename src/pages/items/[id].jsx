@@ -17,9 +17,8 @@ const buyItemHandler = async() => {
             itemPrice: props.price,
             itemSeller: props.seller
         }
-    }
-    )
-}   )    
+      })
+    })    
    const response = await buyItem.json()
    console.log(response)
    if(response.message === "Updated"){
