@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import Link from "next/link"
 
+
 const ListItems = ({items, setItems}) => {
     const fetchingItems = async () => {
         try {
@@ -19,7 +20,7 @@ const ListItems = ({items, setItems}) => {
     return (
         <div>
             <ul className="grid grid-cols-2 gap-5">
-                {items.map((item)=>( item.sellable === 1 &&  
+                {items.map((item)=> (item.sellable === 1 &&  
                     <Link href={`/items/${item.id}`}>
                     <li key={item.id} className="p-5">{item.itemName} {item.price} GRD <img src={item.image}/></li>
                     </Link>
@@ -27,6 +28,7 @@ const ListItems = ({items, setItems}) => {
             </ul>
         </div>
     )
+  
 }
 
     export default ListItems

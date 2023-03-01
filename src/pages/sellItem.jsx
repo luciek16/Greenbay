@@ -18,7 +18,7 @@ const SellItem = ({}) => {
         const addItem = await fetch(`/api/items`, {
         method: "POST",
         headers: {
-            "content-type": "application/json",
+            "Content-type": "application/json",
         },
         body: JSON.stringify({
             itemName: itemName,
@@ -34,27 +34,16 @@ const SellItem = ({}) => {
         }
         
         if(addItem.status === 201){
-        
-                // setItems(prev => [
-                //     ...prev,
-                //  newwItem
-                // ])
             router.push(`items/[id]`, `/items/${data.newItem.id}`)
-            // , query: {
-            //     id: data.newItem.id,
-            //     itemName: data.newItem.itemName,
-            //     image: data.newItem.imageURL,
-            //     price: data.newItem.price
-            // } });
+       
             setItemName('')
             setImgURL('')
             setItemPrice('')
         }
-    } catch(error){
+    } catch(error) {
         console.log(error)
         return alert(`Too bad, didn't work`)
     }
-
 }
 
     return (<form onSubmit = {addItemHandler}>
@@ -71,6 +60,7 @@ const SellItem = ({}) => {
    
     <button>Add</button>
     </form>)
-}
+    }
+
 
 export default SellItem

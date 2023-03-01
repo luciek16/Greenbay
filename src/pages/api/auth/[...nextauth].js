@@ -1,7 +1,8 @@
 import validateCredentials from "@/scripts/validateCredentials";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import hashedPassword from "@/lib/hash";
+import hashedPassword from "@/lib/hashPassword";
+import confirmPassword from "@/lib/confirmPassword";
 // export default NextAuth({
 import databaseQuery from "@/lib/db";
 
@@ -35,32 +36,38 @@ const authOptions = {
 
         const hashPass = await hashedPassword(password);
         console.log(hashPass);
-
-        let sql = `SELECT * FROM users WHERE username = ? `;
-        const result = await databaseQuery(sql, username).catch((e) =>
-          console.log(e)
-        );
-        if (result.length) {
-          const confirmPass = await confirmPassword(password, hashPass);
-          console.log(confirmPass);
-          // if(hashPass === result[0].password) {
-          if (confirmPass) {
-            return { name: username, id: result[0].id };
-          } else if (!confirmPass) {
-            return null;
-          } else {
-            if (!validateCredentials(username, password)) {
+        try {
+          let sql = `SELECT * FROM users WHERE username = ? `;
+          const result = await databaseQuery(sql, username).catch((e) =>
+            console.log(e)
+          );
+          if (result.length) {
+            const confirmPass = await confirmPassword(password, hashPass);
+            console.log(confirmPass);
+            // if(hashPass === result[0].password) {
+            if (confirmPass) {
+              return { name: username, id: result[0].id };
+            } else if (!confirmPass) {
               return null;
+            } else {
+              if (!validateCredentials(username, password)) {
+                return null;
+              }
             }
+          } else {
+            // (result.length && password != result[0].password)
+
+            sql = `INSERT INTO users SET ? `;
+            console.log(result);
+            const add = await databaseQuery(sql, {
+              username,
+              password: hashPass,
+            });
+
+            return { name: username, id: add.insertId };
           }
-        } else {
-          // (result.length && password != result[0].password)
-
-          console.log(result);
-          sql = `INSERT INTO users SET ? `;
-          const add = await databaseQuery(sql, { username, hashPass });
-
-          return { name: username, id: add.insertId };
+        } catch (error) {
+          console.log(error);
         }
       },
     }),
