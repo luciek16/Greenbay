@@ -55,10 +55,7 @@ const authOptions = {
               }
             }
           } else {
-            // (result.length && password != result[0].password)
-
             sql = `INSERT INTO users SET ? `;
-            console.log(result);
             const add = await databaseQuery(sql, {
               username,
               password: hashPass,

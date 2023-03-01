@@ -13,22 +13,29 @@ const ListItems = ({items, setItems}) => {
             console.log("Ooops... something went wrong")
         }
     }
+
     useEffect(() => {
         fetchingItems()
     },[])
 
-    return (
-        <div>
-            <ul className="grid grid-cols-2 gap-5">
-                {items.map((item)=> (item.sellable === 1 &&  
-                    <Link href={`/items/${item.id}`}>
-                    <li key={item.id} className="p-5">{item.itemName} {item.price} GRD <img src={item.image}/></li>
-                    </Link>
-                    ))}
-            </ul>
-        </div>
-    )
-  
+    if(items){
+        return (
+         <div>
+                <ul className="grid grid-cols-2 gap-5">
+                    {items.map((item) => (item.sellable === 1 &&  
+                        <Link href={`/items/${item.id}`}>
+                        <li key={item.id} className="p-5">{item.itemName} {item.price} GRD <img src={item.image}/></li>
+                        </Link>
+                        ))}
+                </ul>
+            </div>
+        )
+    }
+    else {
+        return(
+            <h4>Unable to load items.</h4>
+        )
+    } 
 }
 
     export default ListItems

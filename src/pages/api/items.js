@@ -59,17 +59,20 @@ export default async function addItemHandler(req, res) {
         `SELECT greendollars FROM users WHERE id = ?`,
         token.sub
       );
+
       const userGRD = getUserGRD[0].greendollars;
+
       if (userGRD > itemPrice) {
-        const deductDollars = databaseQuery(
-          `UPDATE users, items SET users.greendollars = users.greendollars - ?, items.sellable = ?, items.buyer = ? WHERE users.username = ? AND items.id = ? AND items.id = ?`,
+        const deductDollars = await databaseQuery(
+          `UPDATE haha, items SET users.greendollars = users.greendollars - ?, items.sellable = ?, items.buyer = ? WHERE users.username = ? AND items.id = ? AND items.id = ?`,
           [itemPrice, 0, token.name, token.name, itemId, itemId]
         );
-        const addDollars = databaseQuery(
-          `UPDATE users SET greendollars = greendollars + ? WHERE username = ?`,
+        const addDollars = await databaseQuery(
+          `UPDATE haha SET greendollars = greendollars + ? WHERE username = ?`,
           [itemPrice, itemSeller]
         );
         const [result1, result2] = await Promise.all([
+          getUserGRD,
           deductDollars,
           addDollars,
         ]);
@@ -77,8 +80,7 @@ export default async function addItemHandler(req, res) {
           result1: result1,
           result2: result2,
         };
-        console.log(result1);
-        console.log(combinedResults);
+
         return res.status(200).send({ message: "Updated" });
       }
     } catch (error) {

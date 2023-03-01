@@ -13,6 +13,7 @@ export default async function getUserHandler(req, res) {
         `SELECT * FROM users WHERE id = ${token.sub}`
       );
       const greenDollars = getUserData[0].greendollars;
+
       return res.status(200).json({ greenDollars: greenDollars });
     } catch (error) {
       console.log(error);
