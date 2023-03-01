@@ -24,7 +24,7 @@ const ListItems = ({items, setItems}) => {
                 <ul className="grid grid-cols-2 gap-5">
                     {items.map((item) => (item.sellable === 1 &&  
                         <Link href={`/items/${item.id}`}>
-                        <li key={item.id} className="p-5">{item.itemName} {item.price} GRD <img src={item.image}/></li>
+                        <li key={item.id} className="grid grid-flow-col grid-cols-4 mx-5 my-1 p-2 max-h-60 bg-white border-2 border-green-800 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-grays-100 dark:hover:bg-green-700"><p className="">{item.itemName}</p> <p className="col-span-1">{item.price} GRD</p> <img src={item.image} className="col-end-2 py-auto w-full rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"/></li>
                         </Link>
                         ))}
                 </ul>
