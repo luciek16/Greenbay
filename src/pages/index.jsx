@@ -24,11 +24,15 @@ function HomePage() {
   if (session) {
     return (
       <div>
-        <div className="flex pl-8 pt-5 gap-8 text-xl font-bold tracking-wider text-green-800">
-          <p>Hi {session.user?.name}!</p>
-          <button type='button' onClick={()=> router.push('/sellItem')}>Sell</button>
-          <p>Green Dollars: {userData} </p>
-          <button onClick={() => signOut()}>Sign out</button>
+        <div className="grid grid-cols-2 pb-3">
+          <div className="flex pl-8 pt-5 gap-8 text-xl font-bold tracking-wider  text-green-800">
+            <p>Hi {session.user?.name}!</p>
+            <button type='button' onClick={()=> router.push('/sellItem')} className='text-base'>Sell</button>
+            <p className='text-base'>Green Dollars: {userData} </p>
+          </div>
+          <div className="flex flex-row-reverse pt-3 pr-3">
+            <button onClick={() => signOut()} className="p-1.5 font-bold text-sm text-green-800 border-dotted mx-2 border border-emerald-500 hover:bg-emerald-500 hover:text-white active:bg-emerald-600 uppercase py-3 rounded-2xl focus:outline-none ease-linear transition-all duration-150" >Sign out</button>
+          </div>
         </div>
         <ListItems items={items} setItems={setItems}/>
       </div>
