@@ -10,7 +10,9 @@ export default async function addItemHandler(req, res) {
 
   if (req.method === "GET") {
     try {
-      const getItems = await databaseQuery(`SELECT * FROM items`);
+      const getItems = await databaseQuery(
+        `SELECT * FROM items WHERE sellable = 1`
+      );
       return res.status(200).json({
         data: {
           items: getItems,
@@ -30,7 +32,7 @@ export default async function addItemHandler(req, res) {
       return res.status(400).json({ error: "Price must be positive integer" });
     }
     if (!isValidURL(imageURL)) {
-      return res.status(400).json({ error: "Image URL must a valid URL" });
+      return res.status(400).json({ error: "Image URL must be a valid URL" });
     }
 
     try {
@@ -63,23 +65,14 @@ export default async function addItemHandler(req, res) {
       const userGRD = getUserGRD[0].greendollars;
 
       if (userGRD > itemPrice) {
-        const deductDollars = await databaseQuery(
-          `UPDATE haha, items SET users.greendollars = users.greendollars - ?, items.sellable = ?, items.buyer = ? WHERE users.username = ? AND items.id = ? AND items.id = ?`,
-          [itemPrice, 0, token.name, token.name, itemId, itemId]
+        await databaseQuery(
+          `UPDATE users, items SET users.greendollars = users.greendollars - ?, items.sellable = ?, items.buyer = ? WHERE users.username = ? AND items.id = ?`,
+          [itemPrice, 0, token.name, token.name, itemId]
         );
-        const addDollars = await databaseQuery(
-          `UPDATE haha SET greendollars = greendollars + ? WHERE username = ?`,
+        await databaseQuery(
+          `UPDATE users SET greendollars = greendollars + ? WHERE username = ?`,
           [itemPrice, itemSeller]
         );
-        const [result1, result2] = await Promise.all([
-          getUserGRD,
-          deductDollars,
-          addDollars,
-        ]);
-        const combinedResults = {
-          result1: result1,
-          result2: result2,
-        };
 
         return res.status(200).send({ message: "Updated" });
       }
@@ -88,4 +81,5 @@ export default async function addItemHandler(req, res) {
       return res.status(500).send({ error: "Internal server error" });
     }
   }
+  return res.send(405).send({ error: "Method not allowed" });
 }

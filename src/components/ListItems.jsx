@@ -20,29 +20,25 @@ const ListItems = ({items, setItems}) => {
 
     if(items){
         return (
-         <div>
-             <ul className="grid grid-cols-2 gap-5">
-                    {items.map((item) => (item.sellable === 1 &&  
-                        <Link href={`/items/${item.id}`}>
-                            <li key={item.id} className="grid grid-flow-col grid-cols-4 grid-rows-4 mx-5 my-1 p-2 max-h-60 bg-white border-2 border-green-800 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-grays-100 dark:hover:bg-green-700">
-                                <p className="row-start-2 px-2">
-                                {item.itemName}</p> 
-                                <p className="row-start-3 px-2"> {item.price} GRD</p> 
-                                {/* <p className="place-self-center"></p> */}
-                                <img src={item.image} className="col-start-1 col-span-2 row-span-4 p-2 object-contain h-56 w-108"/></li>
-                        </Link>
-                        ))}
-                        {/* grid grid-flow-col grid-cols-4 mx-5 my-1 p-2 max-h-60 */}
-                        {/* col-end-2 py-auto w-full rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg */}
-                </ul>
-            </div>
+            <ul className="grid grid-cols-2 gap-5">
+                {items.map((item) => (  
+                    <Link href={`/items/${item.id}`}>
+                        <li key={item.id} className="grid grid-flow-col grid-cols-4 grid-rows-4 mx-5 my-1 p-2 max-h-60 bg-white border-2 border-green-800 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-green-200 dark:hover:bg-green-700">
+                            <p className="row-start-2 px-2">
+                            {item.itemName}</p> 
+                            <p className="row-start-3 px-2"> {new Intl.NumberFormat().format(item.price)} GRD</p> 
+                            <img src={item.image} className="col-start-1 col-span-2 row-span-4 p-2 object-contain h-56 w-108"/>
+                        </li>
+                    </Link>
+                ))}
+            </ul>
         )
     }
-    else {
-        return(
-            <h4>Unable to load items.</h4>
-        )
-    } 
+    
+    return(
+        <p className="text-lg font-bold">Unable to load items</p>
+    )
+     
 }
 
-    export default ListItems
+export default ListItems

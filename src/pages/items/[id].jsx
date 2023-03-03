@@ -31,17 +31,19 @@ const DisplayItem = (props) => {
    
     return(
         <div>
-            {props?
+            {props.item ?
                 <div>
-                <p>{props.itemName}</p>
-                <p>Price: {props.price} GRD</p> 
-                <p>Seller: {props.seller}</p>
-                <img src={props.image}/>
+                    <p className="p-5 mt-10 text-5xl font-bold tracking-wide drop-shadow-lg text-center text-green-800">{props.itemName}</p>
+                    <div className="">
+                        <img src={props.item.image} className="h-96 mx-auto"/>
+                    </div>
+                    <p>Price: {new Intl.NumberFormat().format(props.item.price)} GRD</p> 
+                    <p>Seller: {props.item.seller}</p>
 
-                {props.buyer == 'null'? 
-                    <p>Buyer: {props.buyer} </p> 
-                    : <button type="button" onClick={buyItemHandler}>Buy</button>
-                }
+                    {props.item.buyer == null ? 
+                        <button type="button" onClick={buyItemHandler}>Buy</button>
+                        : <p>Buyer: {props.item.buyer} </p> 
+                    }
                 </div> 
                 : <p>No item was found.</p> }
            
@@ -67,20 +69,18 @@ export async function getServerSideProps({ query }){
         
         if(getItem.length){
             return {
-                props: getItem[0]
+                props: { item: getItem[0]}
             }
         }
         else {
             return {
-                props: {message: 'No item found'}   
+                props: { message: 'No item found'}   
             }
         }
     } catch (error) {
         console.log(error)
         return {
-            props: {
-            error: "Internal server error"
-            }
+            props: { error: "Internal server error"}
         }
     }
 }

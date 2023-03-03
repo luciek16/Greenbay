@@ -1,10 +1,10 @@
-import validateCredentials from "@/scripts/validateCredentials";
+import validateCredentials from "../../../scripts/validateCredentials";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import hashedPassword from "@/lib/hashPassword";
-import confirmPassword from "@/lib/confirmPassword";
+import hashedPassword from "../../../lib/hashPassword";
+import confirmPassword from "../../../lib/confirmPassword";
 // export default NextAuth({
-import databaseQuery from "@/lib/db";
+import databaseQuery from "../../../lib/db";
 
 const authOptions = {
   // enabe JWT
@@ -33,38 +33,33 @@ const authOptions = {
       //in credentials we have all the data coming from the user, all the credentials come from the credentials object above
       async authorize(credentials, req) {
         const { username, password } = credentials;
+        if (!validateCredentials(username, password)) {
+          return null;
+        }
 
         const hashPass = await hashedPassword(password);
-        console.log(hashPass);
         try {
           let sql = `SELECT * FROM users WHERE username = ? `;
-          const result = await databaseQuery(sql, username).catch((e) =>
-            console.log(e)
-          );
-          if (result.length) {
+          const findUser = await databaseQuery(sql, username);
+
+          if (findUser.length) {
             const confirmPass = await confirmPassword(password, hashPass);
-            console.log(confirmPass);
-            // if(hashPass === result[0].password) {
             if (confirmPass) {
-              return { name: username, id: result[0].id };
+              return { name: username, id: findUser[0].id };
             } else if (!confirmPass) {
               return null;
-            } else {
-              if (!validateCredentials(username, password)) {
-                return null;
-              }
             }
           } else {
             sql = `INSERT INTO users SET ? `;
-            const add = await databaseQuery(sql, {
+            const addUser = await databaseQuery(sql, {
               username,
               password: hashPass,
             });
-
-            return { name: username, id: add.insertId };
+            return { name: username, id: addUser.insertId };
           }
         } catch (error) {
           console.log(error);
+          return null;
         }
       },
     }),
