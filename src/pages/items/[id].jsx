@@ -13,9 +13,9 @@ const DisplayItem = (props) => {
             },
             body: JSON.stringify({
                 data: {
-                    itemId: props.id,
-                    itemPrice: props.price,
-                    itemSeller: props.seller
+                    itemId: props.item.id,
+                    itemPrice: props.item.price,
+                    itemSeller: props.item.seller
                 }
             })
         })    
@@ -25,32 +25,33 @@ const DisplayItem = (props) => {
             router.push(`index`, `/`)
         } 
         else{
-            return alert(`The item couldn't be purchased`)
+            return alert(`The item couldn't be purchased... aren't you too poor to buy this item?`)
         }
     }
    
     return(
         <div>
+            <Link href={'/'}>
+                <button type="button" className="text-base text-green-800 mt-5 mx-10 underline hover:text-green-600 focus:outline-none ease-linear transition-all duration-150"> ← Return to homepage</button>
+            </Link>
             {props.item ?
-                <div>
-                    <p className="p-5 mt-10 text-5xl font-bold tracking-wide drop-shadow-lg text-center text-green-800">{props.itemName}</p>
+                <div className="flex flex-col items-center">
+                    <p className="p-5 text-3xl font-bold tracking-wide drop-shadow-lg text-center text-green-800">{props.item.itemName}
+                    </p>
                     <div className="">
                         <img src={props.item.image} className="h-96 mx-auto"/>
                     </div>
-                    <p>Price: {new Intl.NumberFormat().format(props.item.price)} GRD</p> 
-                    <p>Seller: {props.item.seller}</p>
+                    <p className='mt-1'><u>Price:</u> {new Intl.NumberFormat().format(props.item.price)} GRD</p> 
+                    <p><u>Seller:</u> {props.item.seller}</p>
 
                     {props.item.buyer == null ? 
-                        <button type="button" onClick={buyItemHandler}>Buy</button>
+                        <button type="button" onClick={buyItemHandler} className="mt-2 text-gray-100 bg-green-800 border  border-green-800 hover:bg-emerald-600 hover:text-white active:bg-emerald-600 px-2 rounded-xl focus:outline-none ease-linear transition-all duration-150">Buy</button>
                         : <p>Buyer: {props.item.buyer} </p> 
                     }
                 </div> 
                 : <p>No item was found.</p> }
            
             {<div>
-                <Link href={'/'}>
-                    <button type="button">Return to homepage</button>
-                </Link>
             </div>}
         </div>
     )

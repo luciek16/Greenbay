@@ -20,7 +20,7 @@ const authOptions = {
         username: {
           label: "Username",
           type: "text",
-          placeholder: "Please enter your email...",
+          placeholder: "Please enter your username...",
         },
         password: {
           label: "Password",
@@ -54,6 +54,7 @@ const authOptions = {
             const addUser = await databaseQuery(sql, {
               username,
               password: hashPass,
+              greendollars: 200000,
             });
             return { name: username, id: addUser.insertId };
           }

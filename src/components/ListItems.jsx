@@ -21,9 +21,9 @@ const ListItems = ({items, setItems}) => {
     if(items){
         return (
             <ul className="grid grid-cols-2 gap-5">
-                {items.map((item) => (  
+                {items.map((item) => (
                     <Link href={`/items/${item.id}`}>
-                        <li key={item.id} className="grid grid-flow-col grid-cols-4 grid-rows-4 mx-5 my-1 p-2 max-h-60 bg-white border-2 border-green-800 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-green-200 dark:hover:bg-green-700">
+                        <li key={item.id} className="grid grid-flow-col grid-cols-4 grid-rows-4 mx-5 my-1 p-2 max-h-60 bg-white border-2 border-green-800 rounded-lg shadow md:flex-row md:max-w-xl  hover:bg-emerald-400">
                             <p className="row-start-2 px-2">
                             {item.itemName}</p> 
                             <p className="row-start-3 px-2"> {new Intl.NumberFormat().format(item.price)} GRD</p> 
