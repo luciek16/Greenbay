@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import Link from "next/link"
 
-const SellItem = ({}) => {
+const SellItem = () => {
     const router = useRouter()
     const [itemName, setItemName]= useState("")
     const [imgURL, setImgURL] = useState("")
@@ -27,12 +27,11 @@ const SellItem = ({}) => {
                 price: itemPrice
             }),
         }); 
-
             const data = await addItem.json()
             
             if(data.error) 
                 return alert(data.error)
-            
+
             if(addItem.status === 201){
                 router.push(`items/[id]`, `/items/${data.newItem.id}`)
         

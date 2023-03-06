@@ -6,7 +6,7 @@ import ListItems from './ListItems'
 export default function UserPage({username}){
     const [items, setItems] = useState([])
     const [userDollars, setUserDollars] = useState('')
-    const router= useRouter()
+    const router = useRouter()
     
     const fetchDollars = async()=> {
         const dollarAmount = await fetch(`/api/user`)
