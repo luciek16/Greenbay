@@ -18,7 +18,7 @@ const ListItems = ({items, setItems}) => {
         fetchingItems()
     },[])
 
-    if(items){
+    if(items.length){
         return (
             <ul className="grid grid-cols-2 gap-5">
                 {items.map((item) => (
@@ -35,8 +35,14 @@ const ListItems = ({items, setItems}) => {
         )
     }
     
+    if(!items.length){
+        return(
+            <p className="ml-8 mt-20 text-xl font-bold">Already sold out 😓  Be the first one to add a new item 🍚  </p>
+        )
+    }
+    
     return(
-        <p className="text-lg font-bold">Unable to load items</p>
+        <p className="ml-8 mt-20 text-xl font-bold">Unable to load items</p>
     )
      
 }

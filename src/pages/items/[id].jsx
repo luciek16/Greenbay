@@ -46,7 +46,7 @@ const DisplayItem = (props) => {
 
                     {props.item.buyer == null ? 
                         <button type="button" onClick={buyItemHandler} className="mt-2 text-gray-100 bg-green-800 border  border-green-800 hover:bg-emerald-600 hover:text-white active:bg-emerald-600 px-2 rounded-xl focus:outline-none ease-linear transition-all duration-150">Buy</button>
-                        : <p>Buyer: {props.item.buyer} </p> 
+                        : <p><u>Buyer:</u> {props.item.buyer} </p> 
                     }
                 </div> 
                 : <p>No item was found.</p> }
